@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">PPlus</string>
+    <string name="account_id">Account id:</string>
+    <string name="enter_your_account_id">Enter your account id</string>
+    <string name="enter_your_account_code">Enter your account code</string>
+    <string name="login">Login</string>
+    <string name="or">Or</string>
+    <string name="login_as_client">Login as client</string>
+</resources>
