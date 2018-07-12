@@ -6,4 +6,7 @@
     <string name="login">Login</string>
     <string name="or">Or</string>
     <string name="login_as_client">Login as client</string>
+    <string name="inventory">Inventory</string>
+    <string name="stock">Stock</string>
+    <string name="sale">Sale</string>
 </resources>
