@@ -9,18 +9,14 @@
         android:theme="@style/AppTheme">
 
         <activity
-            android:name=".views.login.LoginAct"
-            android:label="@string/app_name"
-            android:screenOrientation="portrait">
-        </activity>
-        <activity
-            android:name=".views.dashboard.DashboardAct"
-            android:theme="@style/Theme.AppCompat.NoActionBar"
+            android:name=".views.main.MainAct"
+            android:theme="@style/Theme.AppCompat"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
     </application>
 </manifest>

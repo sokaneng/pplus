@@ -9,4 +9,14 @@
     <string name="inventory">Inventory</string>
     <string name="stock">Stock</string>
     <string name="sale">Sale</string>
+    <string name="mobile_solution_for_your_business">Mobile solution for your business</string>
+    <string name="no_order_found">No order found</string>
+    <string name="order">Order</string>
+    <string name="dashboard">Dashboard</string>
+    <string name="category">Category</string>
+    <string name="add_and_manage_your_category">Add and Manage your category</string>
+    <string name="add_and_manage_your_product">Add and Manage your product</string>
+    <string name="product">Product</string>
+    <string name="manage">Manage</string>
+    <string name="manage">Manage</string>
 </resources>
