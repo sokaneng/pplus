@@ -21,15 +21,22 @@ public class FragmentPagerAdapter extends android.support.v4.app.FragmentPagerAd
     // This determines the fragment for each tab
     @Override
     public Fragment getItem(int position) {
-        if (position == 0) {
-            return new DashboardAct();
-        } else if (position == 1) {
-            return new SaleAct();
-        } else if (position == 2) {
-            return new StockAct();
-        } else {
-            return new InventoryAct();
+        Fragment fragment = null;
+        switch (position) {
+            case 0:
+                fragment = Fragment.instantiate(mContext, DashboardAct.class.getName());
+                break;
+            case 1:
+                fragment = Fragment.instantiate(mContext, SaleAct.class.getName());
+                break;
+            case 2:
+                fragment = Fragment.instantiate(mContext, StockAct.class.getName());
+                break;
+            case 3:
+                fragment = Fragment.instantiate(mContext, InventoryAct.class.getName());
+                break;
         }
+        return fragment;
     }
 
     // This determines the number of tabs
@@ -37,5 +44,6 @@ public class FragmentPagerAdapter extends android.support.v4.app.FragmentPagerAd
     public int getCount() {
         return 4;
     }
+
 
 }

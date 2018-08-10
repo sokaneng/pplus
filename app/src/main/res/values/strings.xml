@@ -18,4 +18,7 @@
     <string name="add_and_manage_your_product">Add and Manage your product</string>
     <string name="product">Product</string>
     <string name="manage">Manage</string>
+    <string name="code">CODE:</string>
+    <string name="qty">Qty</string>
+    <string name="add_category">Add Category</string>
 </resources>

@@ -5,7 +5,6 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import io.fireant.pplus.R;
 
 public class DashboardAct extends Fragment {
@@ -15,4 +14,8 @@ public class DashboardAct extends Fragment {
 
         return rootView;
     }
+
+    public void loadFragment(){
+    }
+
 }

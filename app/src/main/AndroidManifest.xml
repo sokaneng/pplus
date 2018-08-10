@@ -10,13 +10,26 @@
 
         <activity
             android:name=".views.main.MainAct"
-            android:theme="@style/Theme.AppCompat"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".views.inventory.category.CategoryAct"
+            android:parentActivityName=".views.main.MainAct"
+            android:screenOrientation="portrait"
+            android:label="@string/category"
+            android:theme="@style/Theme.AppCompat" />
+
+        <activity android:name=".views.inventory.category.CategoryAddAct"
+            android:parentActivityName=".views.inventory.category.CategoryAct"
+            android:screenOrientation="portrait"
+            android:label="@string/add_category"
+            android:theme="@style/Theme.AppCompat"/>
 
     </application>
 </manifest>

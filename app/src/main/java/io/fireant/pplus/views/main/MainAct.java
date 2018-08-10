@@ -3,16 +3,22 @@ package io.fireant.pplus.views.main;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.fireant.pplus.R;
+import io.fireant.pplus.views.dashboard.DashboardAct;
+import io.fireant.pplus.views.inventory.InventoryAct;
 import io.fireant.pplus.views.main.adapter.FragmentPagerAdapter;
+import io.fireant.pplus.views.sale.SaleAct;
+import io.fireant.pplus.views.stock.StockAct;
 
 public class MainAct extends AppCompatActivity implements ViewPager.OnPageChangeListener {
 
@@ -22,16 +28,15 @@ public class MainAct extends AppCompatActivity implements ViewPager.OnPageChange
     @BindView(R.id.main_tap)
     TabLayout mTab;
 
-    private ActionBar actionBar;
+    FragmentPagerAdapter pagerAdapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_main);
         ButterKnife.bind(MainAct.this);
-        actionBar = getSupportActionBar();
 
-        FragmentPagerAdapter pagerAdapter = new FragmentPagerAdapter(this, getSupportFragmentManager());
+        pagerAdapter = new FragmentPagerAdapter(this, getSupportFragmentManager());
         mViewPager.setAdapter(pagerAdapter);
         mViewPager.setOnPageChangeListener(this);
         mTab.setupWithViewPager(mViewPager);
@@ -41,7 +46,7 @@ public class MainAct extends AppCompatActivity implements ViewPager.OnPageChange
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.dashboard_menu, menu);
+        inflater.inflate(R.menu.main_menu, menu);
         return true;
     }
 
@@ -59,20 +64,49 @@ public class MainAct extends AppCompatActivity implements ViewPager.OnPageChange
 
     @Override
     public void onPageSelected(int position) {
-//        switch (position) {
-//            case 0:
-//                actionBar.setTitle(R.string.dashboard);
-//                break;
-//            case 1:
-//                actionBar.setTitle(R.string.sale);
-//                break;
-//            case 2:
-//                actionBar.setTitle(R.string.stock);
-//                break;
-//            case 3:
-//                actionBar.setTitle(R.string.inventory);
-//                break;
-//        }
+        List<Fragment> fragments = getSupportFragmentManager().getFragments();
+        switch (position) {
+            case 0:
+                if (fragments != null) {
+                    for (Fragment fragment : fragments) {
+                        if (fragment instanceof DashboardAct) {
+                            ((DashboardAct) fragment).loadFragment();
+                            break;
+                        }
+                    }
+                }
+                break;
+            case 1:
+                if (fragments != null) {
+                    for (Fragment fragment : fragments) {
+                        if (fragment instanceof SaleAct) {
+                            ((SaleAct) fragment).loadFragment();
+                            break;
+                        }
+                    }
+                }
+                break;
+            case 2:
+                if (fragments != null) {
+                    for (Fragment fragment : fragments) {
+                        if (fragment instanceof StockAct) {
+                            ((StockAct) fragment).loadFragment();
+                            break;
+                        }
+                    }
+                }
+                break;
+            case 3:
+                if (fragments != null) {
+                    for (Fragment fragment : fragments) {
+                        if (fragment instanceof InventoryAct) {
+                            ((InventoryAct) fragment).loadFragment();
+                            break;
+                        }
+                    }
+                }
+                break;
+        }
     }
 
     @Override
