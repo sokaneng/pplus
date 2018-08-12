@@ -6,9 +6,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.fireant.pplus.R;
+import io.fireant.pplus.database.tables.Category;
 
 /**
  * Created by engsokan on 8/10/18.
@@ -16,7 +18,7 @@ import io.fireant.pplus.R;
 
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.MyViewHolder> {
 
-    private String[] mDataset;
+    private List<Category> categoryList;
     private final OnItemClickListener listener;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
@@ -27,6 +29,9 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.MyView
         @BindView(R.id.tv_no)
         TextView mTvNo;
 
+        @BindView(R.id.tv_type)
+        TextView mTvType;
+
         @BindView(R.id.img_delete)
         ImageView mImgDelete;
 
@@ -35,12 +40,12 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.MyView
             ButterKnife.bind(this, view);
         }
 
-        public void bind(final String content, final int position, final OnItemClickListener listener) {
+        public void bind(final Category category, final int position, final OnItemClickListener listener) {
 
             mImgDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    listener.onDeleteItemClick(content, position);
+                    listener.onDeleteItemClick(category, position);
                 }
             });
 
@@ -48,8 +53,8 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.MyView
 
     }
 
-    public CategoryAdapter(String[] myDataset, OnItemClickListener listener) {
-        mDataset = myDataset;
+    public CategoryAdapter(List<Category> categoryList, OnItemClickListener listener) {
+        this.categoryList = categoryList;
         this.listener = listener;
     }
 
@@ -63,19 +68,29 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.MyView
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, int position) {
-        holder.bind(mDataset[position], position, listener);
+        Category category = categoryList.get(position);
+        holder.bind(category, position, listener);
         int no = position + 1;
         holder.mTvNo.setText(String.valueOf(no));
-        holder.mTvName.setText(mDataset[position]);
+        holder.mTvName.setText(category.categoryName);
+
+        //Check type
+        String type;
+        if(category.mainCatId == null){
+            type = "Main Category";
+        }else{
+            type = "Sub Category";
+        }
+        holder.mTvType.setText(type);
     }
 
 
     @Override
     public int getItemCount() {
-        return mDataset.length;
+        return categoryList.size();
     }
 
     public interface OnItemClickListener {
-        void onDeleteItemClick(String content, int position);
+        void onDeleteItemClick(Category category, int position);
     }
 }
