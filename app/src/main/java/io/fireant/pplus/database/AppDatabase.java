@@ -8,6 +8,7 @@ import android.content.Context;
 import io.fireant.pplus.database.tables.Category;
 import io.fireant.pplus.database.tables.Product;
 import io.fireant.pplus.database.tables.dao.CategoryDao;
+import io.fireant.pplus.database.tables.dao.ProductDao;
 
 /**
  * Created by engsokan on 8/11/18.
@@ -19,6 +20,8 @@ public abstract class AppDatabase extends RoomDatabase {
     private static AppDatabase db;
 
     public abstract CategoryDao categoryDao();
+
+    public abstract ProductDao productDao();
 
     public static AppDatabase getDatabase(Context context) {
         if (db == null) {

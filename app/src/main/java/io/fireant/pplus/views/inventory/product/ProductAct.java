@@ -1,4 +1,4 @@
-package io.fireant.pplus.views.inventory.category;
+package io.fireant.pplus.views.inventory.product;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,25 +14,22 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.inputmethod.InputMethodManager;
-
 import com.mancj.materialsearchbar.MaterialSearchBar;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.fireant.pplus.R;
 import io.fireant.pplus.common.PPlusDialog;
 import io.fireant.pplus.database.AppDatabase;
-import io.fireant.pplus.database.tables.Category;
-import io.fireant.pplus.views.inventory.category.adapter.CategoryAdapter;
+import io.fireant.pplus.database.tables.Product;
+import io.fireant.pplus.views.inventory.product.adapter.ProductAdapter;
 
 /**
  * Created by engsokan on 8/9/18.
  */
 
-public class CategoryAct extends AppCompatActivity implements MaterialSearchBar.OnSearchActionListener, TextWatcher {
+public class ProductAct extends AppCompatActivity implements MaterialSearchBar.OnSearchActionListener, TextWatcher {
 
     @BindView(R.id.searchBar)
     MaterialSearchBar mSearchBar;
@@ -43,37 +40,36 @@ public class CategoryAct extends AppCompatActivity implements MaterialSearchBar.
     @BindView(R.id.swipeRefreshLayout)
     SwipeRefreshLayout mSwipeRefreshLayout;
 
-    private CategoryAdapter mAdapter;
-    private List<Category> categoryList = new ArrayList<>();
+    private ProductAdapter mAdapter;
+    private List<Product> productList = new ArrayList<>();
     private AppDatabase mDb;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.layout_category);
+        setContentView(R.layout.layout_product);
         ButterKnife.bind(this);
 
         mDb = AppDatabase.getDatabase(getApplicationContext());
-
         mSearchBar.setOnSearchActionListener(this);
         mSearchBar.addTextChangeListener(this);
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                if (loadCategory()) {
+                if (loadProduct()) {
                     mSwipeRefreshLayout.setRefreshing(false);
                 }
             }
         });
 
-        mAdapter = new CategoryAdapter(CategoryAct.this, categoryList, new CategoryAdapter.OnItemClickListener() {
+        mAdapter = new ProductAdapter(productList, new ProductAdapter.OnItemClickListener() {
             @Override
-            public void onDeleteItemClick(final Category category, final int position) {
-                new PPlusDialog(CategoryAct.this, new PPlusDialog.PPlusDialogListener() {
+            public void onDeleteItemClick(final Product product, final int position) {
+                new PPlusDialog(ProductAct.this, new PPlusDialog.PPlusDialogListener() {
                     @Override
                     public void onPositiveClicked() {
-                        mDb.categoryDao().deleteCategory(category);
-                        categoryList.remove(position);
+                        mDb.productDao().deleteProduct(product);
+                        productList.remove(position);
                         mAdapter.notifyDataSetChanged();
                     }
 
@@ -82,9 +78,9 @@ public class CategoryAct extends AppCompatActivity implements MaterialSearchBar.
 
                     }
                 }).confirmDeleteDialog(
-                        getString(R.string.do_you_want_to_delete),
-                        getString(R.string.yes),
-                        getString(R.string.cancel));
+                        getResources().getString(R.string.do_you_want_to_delete),
+                        getResources().getString(R.string.yes),
+                        getResources().getString(R.string.cancel));
 
             }
         });
@@ -98,7 +94,7 @@ public class CategoryAct extends AppCompatActivity implements MaterialSearchBar.
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_add) {
-            startActivity(new Intent(getApplicationContext(), CategoryAddAct.class));
+            startActivity(new Intent(getApplicationContext(), ProductAddAct.class));
         } else {
             onBackPressed();
         }
@@ -113,9 +109,9 @@ public class CategoryAct extends AppCompatActivity implements MaterialSearchBar.
         return true;
     }
 
-    private boolean loadCategory() {
-        categoryList.clear();
-        categoryList.addAll(mDb.categoryDao().loadAllCategories());
+    private boolean loadProduct() {
+        productList.clear();
+        productList.addAll(mDb.productDao().loadAllProduct());
         mAdapter.notifyDataSetChanged();
         return true;
     }
@@ -123,7 +119,7 @@ public class CategoryAct extends AppCompatActivity implements MaterialSearchBar.
     @Override
     protected void onResume() {
         super.onResume();
-        loadCategory();
+        loadProduct();
     }
 
     @Override
@@ -137,7 +133,7 @@ public class CategoryAct extends AppCompatActivity implements MaterialSearchBar.
         if (imm != null) {
             imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
         }
-        filterCategory(text.toString());
+        filterProduct(text.toString());
     }
 
     @Override
@@ -149,9 +145,9 @@ public class CategoryAct extends AppCompatActivity implements MaterialSearchBar.
         }
     }
 
-    private void filterCategory(String filterStr) {
-        categoryList.clear();
-        categoryList.addAll(mDb.categoryDao().findByCategoryName("%" + filterStr + "%"));
+    private void filterProduct(String filterStr) {
+        productList.clear();
+        productList.addAll(mDb.productDao().findByProductName("%" + filterStr + "%"));
         mAdapter.notifyDataSetChanged();
     }
 
@@ -168,7 +164,7 @@ public class CategoryAct extends AppCompatActivity implements MaterialSearchBar.
     @Override
     public void afterTextChanged(Editable s) {
         if (mSearchBar.getText().isEmpty()) {
-            loadCategory();
+            loadProduct();
         }
     }
 }

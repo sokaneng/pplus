@@ -6,9 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-
 import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.fireant.pplus.R;
@@ -25,8 +23,11 @@ public class SelectMainCategoryAdapter extends RecyclerView.Adapter<SelectMainCa
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        @BindView(R.id.tv_name) TextView mTvName;
-        @BindView(R.id.btn_add) Button mBtnAdd;
+        @BindView(R.id.tv_name)
+        TextView mTvName;
+
+        @BindView(R.id.btn_add)
+        Button mBtnAdd;
 
 
         public MyViewHolder(View view) {

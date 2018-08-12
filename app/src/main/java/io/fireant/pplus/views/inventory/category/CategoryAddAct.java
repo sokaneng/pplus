@@ -3,7 +3,6 @@ package io.fireant.pplus.views.inventory.category;
 import android.app.Dialog;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -18,11 +17,9 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnCheckedChanged;
@@ -49,10 +46,7 @@ public class CategoryAddAct extends AppCompatActivity {
     EditText mEdCategoryName;
 
     private String mainCatId;
-
     private AppDatabase mDb;
-
-    private View mView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -73,7 +67,7 @@ public class CategoryAddAct extends AppCompatActivity {
         if (mCbIsSubCat.isChecked()) {
             dialogSelectCategory();
         } else {
-            mTvCategory.setText("None");
+            mTvCategory.setText(R.string.none);
             mainCatId = null;
         }
 
@@ -86,7 +80,6 @@ public class CategoryAddAct extends AppCompatActivity {
             Category category = new Category();
             UUID uuid = UUID.randomUUID();
             String id = uuid.toString();
-
             category.id = id;
             category.categoryName = categoryName;
 
@@ -110,13 +103,13 @@ public class CategoryAddAct extends AppCompatActivity {
                     onBackPressed();
                 }
             }).confirmSuccessDialog(
-                    "Category has been created",
-                    "ADD MORE",
-                    "BACK"
+                    getString(R.string.category_has_been_created),
+                    getString(R.string.add_more),
+                    getString(R.string.back)
             );
 
         } else {
-            Toast.makeText(getApplicationContext(), "Please input category name", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), R.string.please_input_category_name, Toast.LENGTH_SHORT).show();
         }
 
     }
