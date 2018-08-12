@@ -15,7 +15,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Main Category"
+            android:text="@string/main_category"
             android:textColor="@color/colorBlack" />
 
         <View
@@ -38,7 +38,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:textColor="@color/colorBlack"
-        android:text="Back"
+        android:text="@string/back"
         android:textAllCaps="true"
         android:background="@drawable/default_button"/>
 

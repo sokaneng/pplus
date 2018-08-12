@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/product_info"
+        android:textAllCaps="false"
+        android:textSize="16sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/frame"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:src="@drawable/ic_briefcase_plus_black_24dp" />
+
+        <View
+            android:layout_width="0.5dp"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="5dp"
+            android:background="@color/colorGrayDark" />
+
+        <EditText
+            android:id="@+id/ed_product_name"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:backgroundTint="@color/colorWhite"
+            android:hint="@string/product_name"
+            android:inputType="text"
+            android:maxLength="20"
+            android:textColor="@color/colorBlack"
+            android:textColorHint="@color/colorGrayDark" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/frame"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:src="@drawable/ic_briefcase_plus_black_24dp" />
+
+        <View
+            android:layout_width="0.5dp"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="5dp"
+            android:background="@color/colorGrayDark" />
+
+        <EditText
+            android:id="@+id/ed_product_code"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:backgroundTint="@color/colorWhite"
+            android:hint="@string/product_code"
+            android:inputType="text"
+            android:maxLength="20"
+            android:textColor="@color/colorBlack"
+            android:textColorHint="@color/colorGrayDark" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/product_of_category"
+        android:layout_marginTop="20dp"
+        android:textAllCaps="false"
+        android:textSize="16sp" />
+
+    <LinearLayout
+        android:id="@+id/ln_select_category"
+        android:clickable="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/frame"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:src="@drawable/ic_briefcase_plus_black_24dp" />
+
+        <View
+            android:layout_width="0.5dp"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="5dp"
+            android:background="@color/colorGrayDark" />
+
+        <TextView
+            android:id="@+id/tv_category_selected_text"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="18dp"
+            android:layout_marginRight="15dp"
+            android:gravity="center|left"
+            android:textSize="18sp"
+            android:backgroundTint="@color/colorWhite"
+            android:text="@string/select_category"
+            android:textColor="@color/colorGrayDark" />
+    </LinearLayout>
+
+
+    <Button
+        android:id="@+id/btn_create"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/default_button"
+        android:text="@string/create"
+        android:textAllCaps="true"
+        android:textColor="@color/colorBlack" />
+
+
+</LinearLayout>

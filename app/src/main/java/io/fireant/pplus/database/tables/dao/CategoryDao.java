@@ -24,6 +24,12 @@ public interface CategoryDao {
     @Query("select * from category where mainCatId is null")
     List<Category> loadAllMainCategory();
 
+    @Query("select * from category where mainCatId is not null")
+    List<Category> loadAllSubCategory();
+
+    @Query("select * from category where categoryName like :filterStr")
+    List<Category> findByCategoryName(String filterStr);
+
     @Delete
     void deleteCategory(Category category);
 
