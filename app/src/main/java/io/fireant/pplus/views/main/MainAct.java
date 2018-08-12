@@ -8,12 +8,18 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.widget.Toast;
 
+import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.fireant.pplus.R;
+import io.fireant.pplus.database.AppDatabase;
+import io.fireant.pplus.database.tables.Category;
+import io.fireant.pplus.database.utility.DatabaseInitializer;
 import io.fireant.pplus.views.dashboard.DashboardAct;
 import io.fireant.pplus.views.inventory.InventoryAct;
 import io.fireant.pplus.views.main.adapter.FragmentPagerAdapter;
@@ -41,6 +47,7 @@ public class MainAct extends AppCompatActivity implements ViewPager.OnPageChange
         mViewPager.setOnPageChangeListener(this);
         mTab.setupWithViewPager(mViewPager);
         setUpTabIcon();
+
     }
 
     @Override
@@ -113,4 +120,5 @@ public class MainAct extends AppCompatActivity implements ViewPager.OnPageChange
     public void onPageScrollStateChanged(int state) {
 
     }
+
 }

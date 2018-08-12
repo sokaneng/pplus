@@ -6,9 +6,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.fireant.pplus.R;
+import io.fireant.pplus.database.tables.Category;
 
 /**
  * Created by engsokan on 8/10/18.
@@ -16,7 +20,7 @@ import io.fireant.pplus.R;
 
 public class SelectMainCategoryAdapter extends RecyclerView.Adapter<SelectMainCategoryAdapter.MyViewHolder> {
 
-    private String[] mDataset;
+    private List<Category> mainCategoryList;
     private final OnItemClickListener listener;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
@@ -30,12 +34,12 @@ public class SelectMainCategoryAdapter extends RecyclerView.Adapter<SelectMainCa
             ButterKnife.bind(this, view);
         }
 
-        public void bind(final String content, final int position, final OnItemClickListener listener) {
+        public void bind(final Category category, final int position, final OnItemClickListener listener) {
 
             mBtnAdd.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    listener.onAddItemClick(content, position);
+                    listener.onAddItemClick(category, position);
                 }
             });
 
@@ -43,8 +47,8 @@ public class SelectMainCategoryAdapter extends RecyclerView.Adapter<SelectMainCa
 
     }
 
-    public SelectMainCategoryAdapter(String[] myDataset, OnItemClickListener listener) {
-        mDataset = myDataset;
+    public SelectMainCategoryAdapter(List<Category> mainCategoryList, OnItemClickListener listener) {
+        this.mainCategoryList = mainCategoryList;
         this.listener = listener;
     }
 
@@ -58,17 +62,18 @@ public class SelectMainCategoryAdapter extends RecyclerView.Adapter<SelectMainCa
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, int position) {
-        holder.bind(mDataset[position], position, listener);
-        holder.mTvName.setText(mDataset[position]);
+        Category category = mainCategoryList.get(position);
+        holder.bind(category, position, listener);
+        holder.mTvName.setText(category.categoryName);
     }
 
 
     @Override
     public int getItemCount() {
-        return mDataset.length;
+        return mainCategoryList.size();
     }
 
     public interface OnItemClickListener {
-        void onAddItemClick(String content, int position);
+        void onAddItemClick(Category category, int position);
     }
 }

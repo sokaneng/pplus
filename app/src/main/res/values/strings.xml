@@ -21,4 +21,6 @@
     <string name="code">CODE:</string>
     <string name="qty">Qty</string>
     <string name="add_category">Add Category</string>
+    <string name="confirmation">Confirmation</string>
+    <string name="congratulation">Congratulation</string>
 </resources>

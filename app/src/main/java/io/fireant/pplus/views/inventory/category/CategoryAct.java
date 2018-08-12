@@ -11,9 +11,17 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.fireant.pplus.R;
+import io.fireant.pplus.common.PPlusDialog;
+import io.fireant.pplus.database.AppDatabase;
+import io.fireant.pplus.database.tables.Category;
 import io.fireant.pplus.views.inventory.category.adapter.CategoryAdapter;
 
 /**
@@ -29,7 +37,8 @@ public class CategoryAct extends AppCompatActivity {
     SwipeRefreshLayout mSwipeRefreshLayout;
 
     private CategoryAdapter mAdapter;
-    private String[] categoryList = {"Beer", "Food", "as", "asd", "asdad", "assdd","Beer", "Food", "as", "asd", "asdad", "assdd"};
+    private List<Category> categoryList = new ArrayList<>();
+    private AppDatabase mDb;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -37,25 +46,52 @@ public class CategoryAct extends AppCompatActivity {
         setContentView(R.layout.layout_category);
         ButterKnife.bind(this);
 
+        mDb = AppDatabase.getDatabase(getApplicationContext());
+
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                mSwipeRefreshLayout.setRefreshing(false);
+                if (loadCategory()) {
+                    mSwipeRefreshLayout.setRefreshing(false);
+                }
             }
         });
 
-        mAdapter = new CategoryAdapter(categoryList, null);
+        mAdapter = new CategoryAdapter(categoryList, new CategoryAdapter.OnItemClickListener() {
+            @Override
+            public void onDeleteItemClick(final Category category, final int position) {
+                new PPlusDialog(CategoryAct.this, new PPlusDialog.PPlusDialogListener() {
+                    @Override
+                    public void onPositiveClicked() {
+                        mDb.categoryDao().deleteCategory(category);
+                        categoryList.remove(position);
+                        mAdapter.notifyDataSetChanged();
+                    }
+
+                    @Override
+                    public void onNegativeClicked() {
+
+                    }
+                }).confirmDeleteDialog(
+                        "Do you want to delete?",
+                        "YES",
+                        "CANCEL");
+
+            }
+        });
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getApplicationContext(), 1);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.setAdapter(mAdapter);
+
+        loadCategory();
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getItemId() == R.id.action_add){
+        if (item.getItemId() == R.id.action_add) {
             startActivity(new Intent(getApplicationContext(), CategoryAddAct.class));
-        }else {
+        } else {
             onBackPressed();
         }
 
@@ -67,5 +103,18 @@ public class CategoryAct extends AppCompatActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.category_menu, menu);
         return true;
+    }
+
+    private boolean loadCategory() {
+        categoryList.clear();
+        categoryList.addAll(mDb.categoryDao().loadAllCategories());
+        mAdapter.notifyDataSetChanged();
+        return true;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadCategory();
     }
 }
