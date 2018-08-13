@@ -26,6 +26,7 @@ import butterknife.OnClick;
 import io.fireant.pplus.R;
 import io.fireant.pplus.database.AppDatabase;
 import io.fireant.pplus.database.dto.StockQuery;
+import io.fireant.pplus.views.inventory.product.ProductDetailAct;
 import io.fireant.pplus.views.stock.adapter.StockCardAdapter;
 
 import static android.content.Context.INPUT_METHOD_SERVICE;
@@ -61,7 +62,14 @@ public class StockAct extends Fragment implements MaterialSearchBar.OnSearchActi
             }
         });
 
-        mAdapter = new StockCardAdapter(stockQueryList);
+        mAdapter = new StockCardAdapter(stockQueryList, new StockCardAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(String productId) {
+                Intent intent = new Intent(getActivity(), ProductDetailAct.class);
+                intent.putExtra("PRODUCT_ID", productId);
+                startActivity(intent);
+            }
+        });
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 1);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -107,6 +115,12 @@ public class StockAct extends Fragment implements MaterialSearchBar.OnSearchActi
         mAdapter.notifyDataSetChanged();
     }
 
+    public void reloadStock(){
+        if(mSearchBar.getText().trim().isEmpty()){
+            loadStock();
+        }
+    }
+
     @Override
     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -126,6 +140,9 @@ public class StockAct extends Fragment implements MaterialSearchBar.OnSearchActi
 
     @OnClick(R.id.btn_add_stock)
     void onBtnAddStockClicked(){
+        if(!mSearchBar.getText().trim().isEmpty()){
+            mSearchBar.disableSearch();
+        }
         startActivity(new Intent(getActivity(), StockAddAct.class));
     }
 }

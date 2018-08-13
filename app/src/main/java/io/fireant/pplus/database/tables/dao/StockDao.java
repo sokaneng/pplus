@@ -19,11 +19,11 @@ public interface StockDao {
     @Insert(onConflict = IGNORE)
     void insertStock(Stock stock);
 
-    @Query("select Stock.id, SUM(Stock.quantity) AS quantity, Stock.createDate, Product.productName, Product.code FROM Stock " +
+    @Query("select Stock.id, SUM(Stock.quantity) AS quantity, Stock.createDate, Product.id AS productId, Product.productName, Product.code FROM Stock " +
             "INNER JOIN Product ON Stock.pro_id = Product.id WHERE Stock.status = 1 AND Product.status = 1 GROUP BY Product.productName")
     List<StockQuery> loadAllStock();
 
-    @Query("select Stock.id, SUM(Stock.quantity) AS quantity, Stock.createDate, Product.productName, Product.code FROM Stock " +
+    @Query("select Stock.id, SUM(Stock.quantity) AS quantity, Stock.createDate, Product.id AS productId, Product.productName, Product.code FROM Stock " +
             "INNER JOIN Product ON Stock.pro_id = Product.id WHERE Stock.status = 1 " +
             "AND Product.status = 1 AND Product.productName LIKE :filterStr or Product.code like :filterStr GROUP BY Product.productName")
     List<StockQuery> findByProductNameOrCode(String filterStr);

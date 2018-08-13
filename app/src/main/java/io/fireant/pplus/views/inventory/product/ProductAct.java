@@ -86,6 +86,13 @@ public class ProductAct extends AppCompatActivity implements MaterialSearchBar.O
                         getResources().getString(R.string.cancel));
 
             }
+
+            @Override
+            public void onItemClick(String productId) {
+                Intent intent = new Intent(getApplicationContext(), ProductDetailAct.class);
+                intent.putExtra("PRODUCT_ID", productId);
+                startActivity(intent);
+            }
         });
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getApplicationContext(), 1);
         mRecyclerView.setLayoutManager(mLayoutManager);

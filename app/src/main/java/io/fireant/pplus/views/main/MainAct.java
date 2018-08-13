@@ -22,7 +22,7 @@ import io.fireant.pplus.views.main.adapter.FragmentPagerAdapter;
 import io.fireant.pplus.views.sale.SaleAct;
 import io.fireant.pplus.views.stock.StockAct;
 
-public class MainAct extends AppCompatActivity {
+public class MainAct extends AppCompatActivity{
 
     @BindView(R.id.main_vp)
     ViewPager mViewPager;
@@ -63,61 +63,19 @@ public class MainAct extends AppCompatActivity {
         mTab.getTabAt(3).setIcon(R.drawable.ic_briefcase_plus_black_24dp);
     }
 
-//    @Override
-//    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-//
-//    }
-//
-//    @Override
-//    public void onPageSelected(int position) {
-//        List<Fragment> fragments = getSupportFragmentManager().getFragments();
-//        switch (position) {
-//            case 0:
-//                if (fragments != null) {
-//                    for (Fragment fragment : fragments) {
-//                        if (fragment instanceof DashboardAct) {
-//                            ((DashboardAct) fragment).loadFragment();
-//                            break;
-//                        }
-//                    }
-//                }
-//                break;
-//            case 1:
-//                if (fragments != null) {
-//                    for (Fragment fragment : fragments) {
-//                        if (fragment instanceof SaleAct) {
-//                            ((SaleAct) fragment).loadFragment();
-//                            break;
-//                        }
-//                    }
-//                }
-//                break;
-//            case 2:
-//                if (fragments != null) {
-//                    for (Fragment fragment : fragments) {
-//                        if (fragment instanceof StockAct) {
-//                            ((StockAct) fragment).loadFragment();
-//                            break;
-//                        }
-//                    }
-//                }
-//                break;
-//            case 3:
-//                if (fragments != null) {
-//                    for (Fragment fragment : fragments) {
-//                        if (fragment instanceof InventoryAct) {
-//                            ((InventoryAct) fragment).loadFragment();
-//                            break;
-//                        }
-//                    }
-//                }
-//                break;
-//        }
-//    }
-//
-//    @Override
-//    public void onPageScrollStateChanged(int state) {
-//
-//    }
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (mViewPager.getCurrentItem() == 2) {
+            List<Fragment> fragments = getSupportFragmentManager().getFragments();
+            if (fragments != null) {
+                for (Fragment fragment : fragments) {
+                    if (fragment instanceof StockAct) {
+                        ((StockAct) fragment).reloadStock();
+                        break;
+                    }
+                }
+            }
+        }
+    }
 }

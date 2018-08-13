@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import java.util.List;
 import butterknife.BindView;
@@ -18,22 +19,36 @@ import io.fireant.pplus.database.dto.StockQuery;
 public class StockCardAdapter extends RecyclerView.Adapter<StockCardAdapter.MyViewHolder> {
 
     private List<StockQuery> stockQueryList;
+    private OnItemClickListener listener;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.tv_name) TextView mTvName;
         @BindView(R.id.tv_code) TextView mTvCode;
         @BindView(R.id.tv_qty) TextView mQty;
+        @BindView(R.id.ln_item)
+        LinearLayout mLnItem;
 
         public MyViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
         }
+
+        public void bind(final StockQuery product, final int position, final OnItemClickListener listener) {
+
+            mLnItem.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.onItemClick(product.productId);
+                }
+            });
+
+        }
     }
 
-    public StockCardAdapter(List<StockQuery> stockQueryList) {
+    public StockCardAdapter(List<StockQuery> stockQueryList, OnItemClickListener listener) {
         this.stockQueryList = stockQueryList;
-
+        this.listener = listener;
     }
 
     @Override
@@ -50,6 +65,7 @@ public class StockCardAdapter extends RecyclerView.Adapter<StockCardAdapter.MyVi
         holder.mTvName.setText(stock.productName);
         holder.mTvCode.setText(stock.code);
         holder.mQty.setText(String.valueOf(stock.quantity));
+        holder.bind(stock, position, listener);
     }
 
     @Override
@@ -57,4 +73,7 @@ public class StockCardAdapter extends RecyclerView.Adapter<StockCardAdapter.MyVi
         return stockQueryList.size();
     }
 
+    public interface OnItemClickListener {
+        void onItemClick(String productId);
+    }
 }

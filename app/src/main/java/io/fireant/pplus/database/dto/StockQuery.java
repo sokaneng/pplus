@@ -19,6 +19,8 @@ public class StockQuery {
     @ColumnInfo(name = "createDate")
     public Date importDate;
 
+    public String productId;
+
     public String productName;
 
     public String code;

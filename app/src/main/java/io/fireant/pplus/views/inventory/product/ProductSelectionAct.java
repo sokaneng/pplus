@@ -12,20 +12,15 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.MenuItem;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Toast;
-
 import com.mancj.materialsearchbar.MaterialSearchBar;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.fireant.pplus.R;
 import io.fireant.pplus.database.AppDatabase;
 import io.fireant.pplus.database.tables.entities.Product;
 import io.fireant.pplus.views.inventory.product.adapter.ProductSelectionAdapter;
-import io.fireant.pplus.views.inventory.product.listener.ProductSelectionListener;
 
 public class ProductSelectionAct extends AppCompatActivity implements MaterialSearchBar.OnSearchActionListener, TextWatcher {
 
@@ -62,12 +57,11 @@ public class ProductSelectionAct extends AppCompatActivity implements MaterialSe
         mAdapter = new ProductSelectionAdapter(productList, new ProductSelectionAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(Product product, int position) {
-                new ProductSelectionListener() {
-                    @Override
-                    public void selectedProduct(Product product) {
-
-                    }
-                }.selectedProduct(product);
+                Intent output = new Intent();
+                output.putExtra("PRODUCT_ID", product.id);
+                output.putExtra("PRODUCT_NAME", product.productName);
+                setResult(RESULT_OK, output);
+                finish();
             }
         });
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getApplicationContext(), 1);

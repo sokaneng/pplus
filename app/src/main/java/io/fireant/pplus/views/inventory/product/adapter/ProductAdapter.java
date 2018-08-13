@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.List;
@@ -44,6 +45,9 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
         @BindView(R.id.img_delete)
         ImageView mImgDelete;
 
+        @BindView(R.id.ln_item)
+        LinearLayout mLnItem;
+
         public MyViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
@@ -58,6 +62,12 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
                 }
             });
 
+            mLnItem.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.onItemClick(product.id);
+                }
+            });
         }
 
     }
@@ -94,6 +104,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
     }
 
     public interface OnItemClickListener {
+        void onItemClick(String productId);
         void onDeleteItemClick(Product product, int position);
     }
 }
