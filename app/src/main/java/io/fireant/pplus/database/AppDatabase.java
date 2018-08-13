@@ -6,15 +6,22 @@ import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
 
 import io.fireant.pplus.database.tables.Category;
+import io.fireant.pplus.database.tables.Currency;
 import io.fireant.pplus.database.tables.Product;
 import io.fireant.pplus.database.tables.dao.CategoryDao;
+import io.fireant.pplus.database.tables.dao.CurrencyDao;
 import io.fireant.pplus.database.tables.dao.ProductDao;
+import io.fireant.pplus.database.tables.dao.StockDao;
 
 /**
  * Created by engsokan on 8/11/18.
  */
 
-@Database(entities = {Category.class, Product.class}, version = 1)
+@Database(entities = {
+        Category.class,
+        Product.class,
+        Currency.class}
+        , version = 1)
 public abstract class AppDatabase extends RoomDatabase {
 
     private static AppDatabase db;
@@ -22,6 +29,10 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract CategoryDao categoryDao();
 
     public abstract ProductDao productDao();
+
+    public abstract CurrencyDao currencyDao();
+
+    public abstract StockDao stockDao();
 
     public static AppDatabase getDatabase(Context context) {
         if (db == null) {
