@@ -14,15 +14,18 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.inputmethod.InputMethodManager;
+
 import com.mancj.materialsearchbar.MaterialSearchBar;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.fireant.pplus.R;
 import io.fireant.pplus.common.PPlusDialog;
 import io.fireant.pplus.database.AppDatabase;
-import io.fireant.pplus.database.tables.Product;
+import io.fireant.pplus.database.tables.entities.Product;
 import io.fireant.pplus.views.inventory.product.adapter.ProductAdapter;
 
 /**
@@ -88,7 +91,6 @@ public class ProductAct extends AppCompatActivity implements MaterialSearchBar.O
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.setAdapter(mAdapter);
-
     }
 
     @Override
@@ -147,7 +149,7 @@ public class ProductAct extends AppCompatActivity implements MaterialSearchBar.O
 
     private void filterProduct(String filterStr) {
         productList.clear();
-        productList.addAll(mDb.productDao().findByProductName("%" + filterStr + "%"));
+        productList.addAll(mDb.productDao().findByProductNameOrCode("%" + filterStr + "%"));
         mAdapter.notifyDataSetChanged();
     }
 

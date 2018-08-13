@@ -7,7 +7,7 @@ import android.arch.persistence.room.Query;
 
 import java.util.List;
 
-import io.fireant.pplus.database.tables.Product;
+import io.fireant.pplus.database.tables.entities.Product;
 import static android.arch.persistence.room.OnConflictStrategy.IGNORE;
 
 /**
@@ -23,10 +23,10 @@ public interface ProductDao {
     @Delete
     void deleteProduct(Product product);
 
-    @Query("select * from product")
+    @Query("select * from product WHERE status = 1")
     List<Product> loadAllProduct();
 
-    @Query("select * from product where productName like :filterStr or code like :filterStr")
-    List<Product> findByProductName(String filterStr);
+    @Query("select * from product where status = 1 AND productName like :filterStr or code like :filterStr")
+    List<Product> findByProductNameOrCode(String filterStr);
 
 }

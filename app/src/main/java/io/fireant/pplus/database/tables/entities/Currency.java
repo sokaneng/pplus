@@ -1,4 +1,4 @@
-package io.fireant.pplus.database.tables;
+package io.fireant.pplus.database.tables.entities;
 
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;

@@ -23,7 +23,7 @@
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_margin="15dp"
-                android:src="@drawable/ic_briefcase_plus_white_24dp" />
+                android:src="@drawable/ic_ballot_outline_white_24dp" />
 
             <View
                 android:layout_width="0.5dp"

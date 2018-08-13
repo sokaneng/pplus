@@ -9,7 +9,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"
-        android:layout_margin="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
         android:elevation="3dp"
         card_view:cardCornerRadius="3dp">
 
@@ -22,7 +23,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="20dp"
-                android:src="@drawable/ic_briefcase_plus_white_24dp" />
+                android:src="@drawable/ic_cube_white_24dp" />
 
             <View
                 android:layout_width="0.5dp"

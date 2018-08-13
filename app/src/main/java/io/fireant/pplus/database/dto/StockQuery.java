@@ -1,4 +1,4 @@
-package io.fireant.pplus.database.tables;
+package io.fireant.pplus.database.dto;
 
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.TypeConverters;

@@ -10,7 +10,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.fireant.pplus.R;
-import io.fireant.pplus.database.tables.Category;
+import io.fireant.pplus.database.tables.entities.Category;
 
 /**
  * Created by engsokan on 8/10/18.

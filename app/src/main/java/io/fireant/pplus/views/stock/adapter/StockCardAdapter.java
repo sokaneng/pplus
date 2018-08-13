@@ -9,7 +9,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.fireant.pplus.R;
-import io.fireant.pplus.database.tables.StockQuery;
+import io.fireant.pplus.database.dto.StockQuery;
 
 /**
  * Created by engsokan on 11/29/17.
@@ -29,9 +29,7 @@ public class StockCardAdapter extends RecyclerView.Adapter<StockCardAdapter.MyVi
             super(view);
             ButterKnife.bind(this, view);
         }
-
     }
-
 
     public StockCardAdapter(List<StockQuery> stockQueryList) {
         this.stockQueryList = stockQueryList;

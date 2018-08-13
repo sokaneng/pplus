@@ -5,9 +5,10 @@ import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
 
-import io.fireant.pplus.database.tables.Category;
-import io.fireant.pplus.database.tables.Currency;
-import io.fireant.pplus.database.tables.Product;
+import io.fireant.pplus.database.tables.entities.Category;
+import io.fireant.pplus.database.tables.entities.Currency;
+import io.fireant.pplus.database.tables.entities.Product;
+import io.fireant.pplus.database.tables.entities.Stock;
 import io.fireant.pplus.database.tables.dao.CategoryDao;
 import io.fireant.pplus.database.tables.dao.CurrencyDao;
 import io.fireant.pplus.database.tables.dao.ProductDao;
@@ -20,7 +21,8 @@ import io.fireant.pplus.database.tables.dao.StockDao;
 @Database(entities = {
         Category.class,
         Product.class,
-        Currency.class}
+        Currency.class,
+        Stock.class}
         , version = 1)
 public abstract class AppDatabase extends RoomDatabase {
 
@@ -37,7 +39,9 @@ public abstract class AppDatabase extends RoomDatabase {
     public static AppDatabase getDatabase(Context context) {
         if (db == null) {
             db = Room.databaseBuilder(context,
-                    AppDatabase.class, "pplus").allowMainThreadQueries().build();
+                    AppDatabase.class, "pplus")
+                    .fallbackToDestructiveMigration()
+                    .allowMainThreadQueries().build();
         }
         return db;
     }

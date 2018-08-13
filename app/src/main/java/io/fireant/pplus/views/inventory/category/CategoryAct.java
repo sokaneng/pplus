@@ -25,7 +25,7 @@ import butterknife.ButterKnife;
 import io.fireant.pplus.R;
 import io.fireant.pplus.common.PPlusDialog;
 import io.fireant.pplus.database.AppDatabase;
-import io.fireant.pplus.database.tables.Category;
+import io.fireant.pplus.database.tables.entities.Category;
 import io.fireant.pplus.views.inventory.category.adapter.CategoryAdapter;
 
 /**
