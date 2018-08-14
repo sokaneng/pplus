@@ -5,7 +5,6 @@ import android.arch.persistence.room.PrimaryKey;
 import android.arch.persistence.room.TypeConverters;
 import android.support.annotation.NonNull;
 import java.util.Date;
-
 import io.fireant.pplus.database.utility.DateConverter;
 
 /**

@@ -1,17 +1,16 @@
 package io.fireant.pplus.database.utility;
 
 import android.os.AsyncTask;
-
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
-
 import io.fireant.pplus.database.AppDatabase;
 import io.fireant.pplus.database.tables.entities.Category;
 import io.fireant.pplus.database.tables.entities.Currency;
 import io.fireant.pplus.database.tables.entities.Product;
 import io.fireant.pplus.database.tables.entities.Stock;
 import io.fireant.pplus.database.dto.StockQuery;
+import io.fireant.pplus.database.tables.entities.StockImport;
 
 public class DatabaseInitializer {
 
@@ -73,24 +72,44 @@ public class DatabaseInitializer {
             String stockId = uuid.toString();
             stock.id = stockId;
             stock.proId = product.id;
-            stock.quantity = 10;
+            stock.totalQuantity = 0;
             stock.createDate = new Date();
             stock.status = 1;
             db.stockDao().insertStock(stock);
             List<StockQuery> stockQueryList = db.stockDao().loadAllStock();
             System.out.println("Stock size:" + stockQueryList.size());
 
-            stock = new Stock();
+            StockImport stockImport = new StockImport();
             uuid = UUID.randomUUID();
-            stockId = uuid.toString();
-            stock.id = stockId;
-            stock.proId = product.id;
-            stock.quantity = 5;
-            stock.createDate = new Date();
-            stock.status = 1;
-            db.stockDao().insertStock(stock);
-            stockQueryList = db.stockDao().loadAllStock();
-            System.out.println("Stock size:" + stockQueryList.size());
+            String stockImportId = uuid.toString();
+            stockImport.id = stockImportId;
+            stockImport.stockId = stock.id;
+            stockImport.quantity = 10;
+            stockImport.importDate = new Date();
+            stockImport.status = 1;
+            db.stockImportDao().insertStockImport(stockImport);
+
+            stock.totalQuantity = 10;
+            stock.updateDate = new Date();
+            db.stockDao().updateStock(stock);
+
+            stockImport = new StockImport();
+            uuid = UUID.randomUUID();
+            stockImportId = uuid.toString();
+            stockImport.id = stockImportId;
+            stockImport.stockId = stock.id;
+            stockImport.quantity = 7;
+            stockImport.importDate = new Date();
+            stockImport.status = 1;
+            db.stockImportDao().insertStockImport(stockImport);
+
+            stock.totalQuantity = 17;
+            stock.updateDate = new Date();
+            db.stockDao().updateStock(stock);
+
+            List<StockImport> stockImportList = db.stockImportDao().loadStockImportByStockId(stock.id);
+            System.out.println(stockImportList.size());
+
         }
     }
 

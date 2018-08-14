@@ -7,9 +7,7 @@ import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 import android.arch.persistence.room.TypeConverters;
 import android.support.annotation.NonNull;
-
 import java.util.Date;
-
 import io.fireant.pplus.database.utility.DateConverter;
 
 /**
@@ -30,9 +28,11 @@ public class Stock {
     @ColumnInfo(name = "pro_id")
     public String proId;
 
-    public int quantity;
+    public int totalQuantity;
 
     public Date createDate;
+
+    public Date updateDate;
 
     public int status;
 }

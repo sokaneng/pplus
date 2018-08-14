@@ -26,6 +26,7 @@ import io.fireant.pplus.R;
 import io.fireant.pplus.common.PPlusDialog;
 import io.fireant.pplus.database.AppDatabase;
 import io.fireant.pplus.database.tables.entities.Product;
+import io.fireant.pplus.database.tables.entities.Stock;
 import io.fireant.pplus.views.inventory.product.adapter.ProductAdapter;
 
 /**
@@ -68,10 +69,20 @@ public class ProductAct extends AppCompatActivity implements MaterialSearchBar.O
         mAdapter = new ProductAdapter(productList, new ProductAdapter.OnItemClickListener() {
             @Override
             public void onDeleteItemClick(final Product product, final int position) {
+                Stock stock = mDb.stockDao().findAvailableStockByProductId(product.id);
+                String msg;
+                if (stock == null) {
+                    msg = getString(R.string.do_you_want_to_delete);
+                } else {
+                    //Product with stock
+                    msg = getString(R.string.product_has_qty) + " " + stock.totalQuantity + " " + getString(R.string.in_stock) +"\n";
+                    msg += getString(R.string.do_you_want_to_delete);
+                }
                 new PPlusDialog(ProductAct.this, new PPlusDialog.PPlusDialogListener() {
                     @Override
                     public void onPositiveClicked() {
-                        mDb.productDao().deleteProduct(product);
+                        product.status = 0;
+                        mDb.productDao().updateProduct(product);
                         productList.remove(position);
                         mAdapter.notifyDataSetChanged();
                     }
@@ -81,10 +92,9 @@ public class ProductAct extends AppCompatActivity implements MaterialSearchBar.O
 
                     }
                 }).confirmDeleteDialog(
-                        getResources().getString(R.string.do_you_want_to_delete),
+                        msg,
                         getResources().getString(R.string.yes),
                         getResources().getString(R.string.cancel));
-
             }
 
             @Override

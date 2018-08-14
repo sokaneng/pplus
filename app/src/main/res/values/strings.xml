@@ -67,5 +67,19 @@
     <string name="price">Price:</string>
     <string name="create_date">Create date:</string>
     <string name="quantity_in_stock">Quantity in stock:</string>
-    <string name="import_date">Import date:</string>
+    <string name="import_date">Last import date:</string>
+    <string name="no_detail_product">No detail about this product</string>
+    <string name="update_stock">Update Stock</string>
+    <string name="update_product">Update Product</string>
+    <string name="view_import">View Import</string>
+    <string name="refreshing">Refreshing</string>
+    <string name="update_product_success">Update product successful</string>
+    <string name="update_date">Update date:</string>
+    <string name="product_has_qty">Product has quantity:</string>
+    <string name="in_stock">in stock.</string>
+    <string name="stock_import_transaction">Stock Import Transaction</string>
+    <string name="import_on">Import on:</string>
+    <string name="got_it">Got It</string>
+    <string name="sorry_you_cannot_delete_cat">Sorry you cannot delete this category.</string>
+    <string name="there_is_some_product_belong">There is some product belong to it.</string>
 </resources>

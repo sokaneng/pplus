@@ -1,11 +1,9 @@
 package io.fireant.pplus.database.tables.dao;
 
 import android.arch.persistence.room.Dao;
-import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
-
 import java.util.List;
 import io.fireant.pplus.database.tables.entities.Category;
 import static android.arch.persistence.room.OnConflictStrategy.IGNORE;
@@ -32,9 +30,6 @@ public interface CategoryDao {
 
     @Query("select * from category where categoryName like :filterStr and status = 1")
     List<Category> findByCategoryName(String filterStr);
-
-    @Delete
-    void deleteCategory(Category category);
 
     @Update(onConflict = REPLACE)
     void updateCategory(Category category);

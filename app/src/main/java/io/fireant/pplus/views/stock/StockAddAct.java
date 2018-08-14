@@ -19,7 +19,11 @@ import butterknife.OnClick;
 import io.fireant.pplus.R;
 import io.fireant.pplus.common.PPlusDialog;
 import io.fireant.pplus.database.AppDatabase;
+import io.fireant.pplus.database.dto.ProductDetailQuery;
+import io.fireant.pplus.database.dto.StockQuery;
 import io.fireant.pplus.database.tables.entities.Stock;
+import io.fireant.pplus.database.tables.entities.StockImport;
+import io.fireant.pplus.views.inventory.product.ProductDetailAct;
 import io.fireant.pplus.views.inventory.product.ProductSelectionAct;
 
 public class StockAddAct extends AppCompatActivity {
@@ -97,15 +101,27 @@ public class StockAddAct extends AppCompatActivity {
             if (qtyStr != null && !qtyStr.isEmpty()) {
                 int qty = Integer.parseInt(qtyStr);
                 if (qty > 0) {
-                    Stock stock = new Stock();
+
+                    //Get stock id
+                    Stock stock = mDb.stockDao().findStockByProductId(productSelectedId);
+
+                    //Add stock import
+                    StockImport stockImport = new StockImport();
                     UUID uuid = UUID.randomUUID();
-                    String stockId = uuid.toString();
-                    stock.id = stockId;
-                    stock.proId = productSelectedId;
-                    stock.quantity = qty;
-                    stock.createDate = new Date();
+                    String stockImportId = uuid.toString();
+                    stockImport.id = stockImportId;
+                    stockImport.stockId = stock.id;
+                    stockImport.quantity = qty;
+                    stockImport.importDate = new Date();
+                    stockImport.status = 1;
+                    mDb.stockImportDao().insertStockImport(stockImport);
+
+                    //Update total stock
+                    stock.totalQuantity = stock.totalQuantity + qty;
+                    stock.updateDate = new Date();
                     stock.status = 1;
-                    mDb.stockDao().insertStock(stock);
+                    mDb.stockDao().updateStock(stock);
+
                     new PPlusDialog(this, new PPlusDialog.PPlusDialogListener() {
                         @Override
                         public void onPositiveClicked() {

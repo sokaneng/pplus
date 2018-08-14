@@ -11,37 +11,26 @@ import java.util.Date;
 import io.fireant.pplus.database.utility.DateConverter;
 
 /**
- * Created by engsokan on 8/11/18.
+ * Created by engsokan on 8/12/18.
  */
 
 @Entity(foreignKeys = {
-        @ForeignKey(entity = Category.class,
-                parentColumns = "id",
-                childColumns = "cat_id")},
-        indices = {@Index(value = "cat_id"), @Index(value = "currency_code")})
+        @ForeignKey(entity = Stock.class,parentColumns = "id", childColumns = "stock_id")},
+indices = {@Index(value = "stock_id")})
 
 @TypeConverters(DateConverter.class)
-public class Product {
+public class StockImport {
 
     @PrimaryKey
     @NonNull
     public String id;
 
-    public String productName;
+    @ColumnInfo(name = "stock_id")
+    public String stockId;
 
-    @ColumnInfo(name = "cat_id")
-    public String catId;
+    public int quantity;
 
-    public String code;
-
-    @ColumnInfo(name = "currency_code")
-    public String currencyCode;
-
-    public Double pricePerUnit;
-
-    public Date createDate;
-
-    public Date updateDate;
+    public Date importDate;
 
     public int status;
 }

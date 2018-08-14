@@ -53,6 +53,7 @@ public class StockAct extends Fragment implements MaterialSearchBar.OnSearchActi
         mDb = AppDatabase.getDatabase(getActivity());
         mSearchBar.setOnSearchActionListener(this);
         mSearchBar.addTextChangeListener(this);
+        mSearchBar.clearFocus();
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
