@@ -175,19 +175,40 @@
 
         </LinearLayout>
 
-        <Button
-            android:id="@+id/btn_update_product"
-            android:layout_width="180dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp"
-            android:background="@drawable/default_button"
-            android:paddingLeft="20dp"
-            android:paddingRight="20dp"
-            android:text="@string/update_product"
-            android:textAllCaps="false"
-            android:textColor="@color/colorBlack" />
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:id="@+id/btn_update_product"
+                android:layout_width="180dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/default_button"
+                android:clickable="true"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:paddingBottom="15dp"
+                android:paddingTop="15dp">
+
+                <ImageView
+                    android:layout_width="50px"
+                    android:layout_height="50px"
+                    android:src="@drawable/ic_ballot_outline_black_24dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15px"
+                    android:text="@string/update_product"
+                    android:textColor="@color/colorBlack"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/ln_about_stock"
@@ -261,30 +282,59 @@
                 android:layout_marginTop="10dp"
                 android:orientation="horizontal">
 
-                <Button
+                <LinearLayout
                     android:id="@+id/btn_add_stock"
-                    android:layout_width="180dp"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="right"
+                    android:layout_weight="1"
                     android:background="@drawable/default_button"
-                    android:paddingLeft="20dp"
-                    android:paddingRight="20dp"
-                    android:text="@string/add_stock"
-                    android:textAllCaps="false"
-                    android:textColor="@color/colorBlack" />
+                    android:clickable="true"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:paddingBottom="15dp"
+                    android:paddingTop="15dp">
 
-                <Button
+                    <ImageView
+                        android:layout_width="50px"
+                        android:layout_height="50px"
+                        android:src="@drawable/ic_plus_circle_black_24dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15px"
+                        android:text="@string/add_stock"
+                        android:textColor="@color/colorBlack"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
                     android:id="@+id/btn_view_import"
-                    android:layout_width="180dp"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="right"
-                    android:background="@drawable/default_button"
-                    android:paddingLeft="20dp"
                     android:layout_marginLeft="20px"
-                    android:paddingRight="20dp"
-                    android:text="@string/view_import"
-                    android:textAllCaps="false"
-                    android:textColor="@color/colorBlack" />
+                    android:layout_weight="1"
+                    android:background="@drawable/default_button"
+                    android:clickable="true"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:paddingBottom="15dp"
+                    android:paddingTop="15dp">
+
+                    <ImageView
+                        android:layout_width="50px"
+                        android:layout_height="50px"
+                        android:src="@drawable/ic_buffer_black_24dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="15px"
+                        android:text="@string/view_import"
+                        android:textColor="@color/colorBlack"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
             </LinearLayout>
 
         </LinearLayout>

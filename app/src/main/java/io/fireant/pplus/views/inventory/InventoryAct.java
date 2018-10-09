@@ -32,8 +32,5 @@ public class InventoryAct extends Fragment {
         startActivity(new Intent(getActivity(), ProductAct.class));
     }
 
-    public void loadFragment(){
-    }
-
 
 }
