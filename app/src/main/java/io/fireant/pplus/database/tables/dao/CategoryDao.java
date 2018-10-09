@@ -31,6 +31,9 @@ public interface CategoryDao {
     @Query("select * from category where categoryName like :filterStr and status = 1")
     List<Category> findByCategoryName(String filterStr);
 
+    @Query("select * from category where mainCatId =:catId and status = 1")
+    List<Category> findByCategoryIdHasChild(String catId);
+
     @Update(onConflict = REPLACE)
     void updateCategory(Category category);
 

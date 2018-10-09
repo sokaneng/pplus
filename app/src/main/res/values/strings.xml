@@ -77,9 +77,10 @@
     <string name="update_date">Update date:</string>
     <string name="product_has_qty">Product has quantity:</string>
     <string name="in_stock">in stock.</string>
-    <string name="stock_import_transaction">Stock Import Transaction</string>
+    <string name="stock_import_transaction">Stock Import History</string>
     <string name="import_on">Import on:</string>
     <string name="got_it">Got It</string>
     <string name="sorry_you_cannot_delete_cat">Sorry you cannot delete this category.</string>
     <string name="there_is_some_product_belong">There is some product belong to it.</string>
+    <string name="there_is_some_category_belong">There is some sub category belong to it.</string>
 </resources>

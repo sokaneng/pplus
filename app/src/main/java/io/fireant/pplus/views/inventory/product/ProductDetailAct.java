@@ -22,6 +22,7 @@ import io.fireant.pplus.database.AppDatabase;
 import io.fireant.pplus.database.dto.ProductDetailQuery;
 import io.fireant.pplus.database.dto.StockQuery;
 import io.fireant.pplus.database.tables.entities.Stock;
+import io.fireant.pplus.views.stock.StockAddAct;
 import io.fireant.pplus.views.stock.StockViewImportAct;
 
 /**
@@ -77,10 +78,15 @@ public class ProductDetailAct extends AppCompatActivity {
 
         Intent intent = getIntent();
         productId = intent.getStringExtra("PRODUCT_ID");
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         if (productId != null) {
             loadProductDetail();
         }
-
     }
 
     private void loadProductDetail() {
@@ -112,10 +118,18 @@ public class ProductDetailAct extends AppCompatActivity {
     }
 
     @OnClick(R.id.btn_update_product)
-    void onBtnUpdateProductClicked() {
+    void onBtnUpdateProduct() {
         Intent intent = new Intent(getApplicationContext(), ProductUpdateAct.class);
         intent.putExtra("PRODUCT_ID", productId);
         startActivityForResult(intent, PRODUCT_UPDATE_ACTIVITY_CODE);
+    }
+
+    @OnClick(R.id.btn_add_stock)
+    void onBtnAddStock(){
+        Intent intent = new Intent(getApplicationContext(), StockAddAct.class);
+        intent.putExtra("PRODUCT_NAME", mTvName.getText().toString().trim());
+        intent.putExtra("PRODUCT_ID", productId);
+        startActivity(intent);
     }
 
     @OnClick(R.id.btn_view_import)
@@ -167,4 +181,5 @@ public class ProductDetailAct extends AppCompatActivity {
             mLnAboutStock.setVisibility(View.GONE);
         }
     }
+
 }
