@@ -43,5 +43,35 @@
             android:label="@string/add_product"
             android:theme="@style/Theme.AppCompat"/>
 
+        <activity android:name=".views.stock.StockAddAct"
+            android:parentActivityName=".views.main.MainAct"
+            android:screenOrientation="portrait"
+            android:label="@string/add_stock"
+            android:theme="@style/Theme.AppCompat"/>
+
+        <activity android:name=".views.inventory.product.ProductSelectionAct"
+            android:parentActivityName=".views.stock.StockAddAct"
+            android:screenOrientation="portrait"
+            android:label="@string/product_selection"
+            android:theme="@style/Theme.AppCompat"/>
+
+        <activity android:name=".views.inventory.product.ProductDetailAct"
+            android:parentActivityName=".views.main.MainAct"
+            android:screenOrientation="portrait"
+            android:label=""
+            android:theme="@style/Theme.AppCompat"/>
+
+        <activity android:name=".views.inventory.product.ProductUpdateAct"
+            android:parentActivityName=".views.inventory.product.ProductDetailAct"
+            android:screenOrientation="portrait"
+            android:label=""
+            android:theme="@style/Theme.AppCompat"/>
+
+        <activity android:name=".views.stock.StockViewImportAct"
+            android:parentActivityName=".views.inventory.product.ProductDetailAct"
+            android:screenOrientation="portrait"
+            android:label=""
+            android:theme="@style/Theme.AppCompat"/>
+
     </application>
 </manifest>

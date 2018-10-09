@@ -1,15 +1,14 @@
 package io.fireant.pplus.views.stock;
 
-import android.app.Activity;
-import android.app.ProgressDialog;
-import android.os.AsyncTask;
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,14 +22,16 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import io.fireant.pplus.R;
-import io.fireant.pplus.dto.ProductDTO;
-import io.fireant.pplus.dto.StockDTO;
+import io.fireant.pplus.database.AppDatabase;
+import io.fireant.pplus.database.dto.StockQuery;
+import io.fireant.pplus.views.inventory.product.ProductDetailAct;
 import io.fireant.pplus.views.stock.adapter.StockCardAdapter;
 
 import static android.content.Context.INPUT_METHOD_SERVICE;
 
-public class StockAct extends Fragment implements MaterialSearchBar.OnSearchActionListener {
+public class StockAct extends Fragment implements MaterialSearchBar.OnSearchActionListener, TextWatcher {
 
     @BindView(R.id.searchBar)
     MaterialSearchBar mSearchBar;
@@ -42,32 +43,48 @@ public class StockAct extends Fragment implements MaterialSearchBar.OnSearchActi
     SwipeRefreshLayout mSwipeRefreshLayout;
 
     private StockCardAdapter mAdapter;
-    private List<StockDTO> stockDTOList = new ArrayList<>();
+    private List<StockQuery> stockQueryList = new ArrayList<>();
+    private AppDatabase mDb;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.layout_stock, container, false);
         ButterKnife.bind(this, rootView);
-
+        mDb = AppDatabase.getDatabase(getActivity());
         mSearchBar.setOnSearchActionListener(this);
+        mSearchBar.addTextChangeListener(this);
+        mSearchBar.clearFocus();
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                mSwipeRefreshLayout.setRefreshing(false);
+                if (loadStock()) {
+                    mSwipeRefreshLayout.setRefreshing(false);
+                }
             }
         });
 
-        mAdapter = new StockCardAdapter(stockDTOList);
+        mAdapter = new StockCardAdapter(stockQueryList, new StockCardAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(String productId) {
+                Intent intent = new Intent(getActivity(), ProductDetailAct.class);
+                intent.putExtra("PRODUCT_ID", productId);
+                startActivity(intent);
+            }
+        });
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getActivity(), 1);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.setAdapter(mAdapter);
+        loadStock();
 
         return rootView;
     }
 
-    public void loadFragment() {
-        new LoadStock().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+    public boolean loadStock() {
+        stockQueryList.clear();
+        stockQueryList.addAll(mDb.stockDao().loadAllStock());
+        mAdapter.notifyDataSetChanged();
+        return true;
     }
 
     @Override
@@ -77,11 +94,11 @@ public class StockAct extends Fragment implements MaterialSearchBar.OnSearchActi
 
     @Override
     public void onSearchConfirmed(CharSequence text) {
-        Toast.makeText(getActivity(), "Search " + text, Toast.LENGTH_SHORT).show();
         InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(INPUT_METHOD_SERVICE);
         if (imm != null) {
             imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
         }
+        filterStock(text.toString());
     }
 
     @Override
@@ -93,109 +110,40 @@ public class StockAct extends Fragment implements MaterialSearchBar.OnSearchActi
         }
     }
 
-    private class LoadStock extends AsyncTask<String, Void, String> {
+    private void filterStock(String filterStr) {
+        stockQueryList.clear();
+        stockQueryList.addAll(mDb.stockDao().findByProductNameOrCode("%" + filterStr + "%"));
+        mAdapter.notifyDataSetChanged();
+    }
 
-        @Override
-        protected String doInBackground(String... params) {
-
-            stockDTOList.clear();
-
-            StockDTO stockDTO = new StockDTO();
-            stockDTO.setAmountInStock(20);
-            ProductDTO productDTO = new ProductDTO();
-            productDTO.setName("T-Shirt");
-            productDTO.setId("0000001");
-            stockDTO.setProduct(productDTO);
-            stockDTOList.add(stockDTO);
-
-            stockDTO = new StockDTO();
-            stockDTO.setAmountInStock(17);
-            productDTO = new ProductDTO();
-            productDTO.setName("Bag");
-            productDTO.setId("0000002");
-            stockDTO.setProduct(productDTO);
-            stockDTOList.add(stockDTO);
-
-            stockDTO = new StockDTO();
-            stockDTO.setAmountInStock(17);
-            productDTO = new ProductDTO();
-            productDTO.setName("Bag");
-            productDTO.setId("0000002");
-            stockDTO.setProduct(productDTO);
-            stockDTOList.add(stockDTO);
-
-            stockDTO = new StockDTO();
-            stockDTO.setAmountInStock(17);
-            productDTO = new ProductDTO();
-            productDTO.setName("Bag");
-            productDTO.setId("0000002");
-            stockDTO.setProduct(productDTO);
-            stockDTOList.add(stockDTO);
-
-            stockDTO = new StockDTO();
-            stockDTO.setAmountInStock(17);
-            productDTO = new ProductDTO();
-            productDTO.setName("Bag");
-            productDTO.setId("0000002");
-            stockDTO.setProduct(productDTO);
-            stockDTOList.add(stockDTO);
-
-            stockDTO = new StockDTO();
-            stockDTO.setAmountInStock(17);
-            productDTO = new ProductDTO();
-            productDTO.setName("Bag");
-            productDTO.setId("0000002");
-            stockDTO.setProduct(productDTO);
-            stockDTOList.add(stockDTO);
-
-            stockDTO = new StockDTO();
-            stockDTO.setAmountInStock(17);
-            productDTO = new ProductDTO();
-            productDTO.setName("Bag");
-            productDTO.setId("0000002");
-            stockDTO.setProduct(productDTO);
-            stockDTOList.add(stockDTO);
-
-            stockDTO = new StockDTO();
-            stockDTO.setAmountInStock(17);
-            productDTO = new ProductDTO();
-            productDTO.setName("Bag");
-            productDTO.setId("0000002");
-            stockDTO.setProduct(productDTO);
-            stockDTOList.add(stockDTO);
-
-            stockDTO = new StockDTO();
-            stockDTO.setAmountInStock(17);
-            productDTO = new ProductDTO();
-            productDTO.setName("Bag");
-            productDTO.setId("0000002");
-            stockDTO.setProduct(productDTO);
-            stockDTOList.add(stockDTO);
-
-            stockDTO = new StockDTO();
-            stockDTO.setAmountInStock(17);
-            productDTO = new ProductDTO();
-            productDTO.setName("Bag");
-            productDTO.setId("0000002");
-            stockDTO.setProduct(productDTO);
-            stockDTOList.add(stockDTO);
-
-
-            return "Executed";
+    public void reloadStock(){
+        if(mSearchBar.getText().trim().isEmpty()){
+            loadStock();
         }
+    }
 
-        @Override
-        protected void onPostExecute(String result) {
-            mAdapter.notifyDataSetChanged();
+    @Override
+    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+    }
+
+    @Override
+    public void afterTextChanged(Editable s) {
+        if (mSearchBar.getText().isEmpty()) {
+            loadStock();
         }
+    }
 
-        @Override
-        protected void onPreExecute() {
-
+    @OnClick(R.id.btn_add_stock)
+    void onBtnAddStockClicked(){
+        if(!mSearchBar.getText().trim().isEmpty()){
+            mSearchBar.disableSearch();
         }
-
-        @Override
-        protected void onProgressUpdate(Void... values) {
-        }
+        startActivity(new Intent(getActivity(), StockAddAct.class));
     }
 }

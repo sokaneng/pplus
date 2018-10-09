@@ -8,17 +8,13 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.widget.Toast;
 
-import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.fireant.pplus.R;
 import io.fireant.pplus.database.AppDatabase;
-import io.fireant.pplus.database.tables.Category;
 import io.fireant.pplus.database.utility.DatabaseInitializer;
 import io.fireant.pplus.views.dashboard.DashboardAct;
 import io.fireant.pplus.views.inventory.InventoryAct;
@@ -26,7 +22,7 @@ import io.fireant.pplus.views.main.adapter.FragmentPagerAdapter;
 import io.fireant.pplus.views.sale.SaleAct;
 import io.fireant.pplus.views.stock.StockAct;
 
-public class MainAct extends AppCompatActivity implements ViewPager.OnPageChangeListener {
+public class MainAct extends AppCompatActivity{
 
     @BindView(R.id.main_vp)
     ViewPager mViewPager;
@@ -44,9 +40,12 @@ public class MainAct extends AppCompatActivity implements ViewPager.OnPageChange
 
         pagerAdapter = new FragmentPagerAdapter(this, getSupportFragmentManager());
         mViewPager.setAdapter(pagerAdapter);
-        mViewPager.setOnPageChangeListener(this);
         mTab.setupWithViewPager(mViewPager);
         setUpTabIcon();
+
+        //Initialize database data
+        AppDatabase appDatabase = AppDatabase.getDatabase(this);
+        DatabaseInitializer.populateAsync(appDatabase);
 
     }
 
@@ -65,60 +64,18 @@ public class MainAct extends AppCompatActivity implements ViewPager.OnPageChange
     }
 
     @Override
-    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-    }
-
-    @Override
-    public void onPageSelected(int position) {
-        List<Fragment> fragments = getSupportFragmentManager().getFragments();
-        switch (position) {
-            case 0:
-                if (fragments != null) {
-                    for (Fragment fragment : fragments) {
-                        if (fragment instanceof DashboardAct) {
-                            ((DashboardAct) fragment).loadFragment();
-                            break;
-                        }
+    protected void onResume() {
+        super.onResume();
+        if (mViewPager.getCurrentItem() == 2) {
+            List<Fragment> fragments = getSupportFragmentManager().getFragments();
+            if (fragments != null) {
+                for (Fragment fragment : fragments) {
+                    if (fragment instanceof StockAct) {
+                        ((StockAct) fragment).reloadStock();
+                        break;
                     }
                 }
-                break;
-            case 1:
-                if (fragments != null) {
-                    for (Fragment fragment : fragments) {
-                        if (fragment instanceof SaleAct) {
-                            ((SaleAct) fragment).loadFragment();
-                            break;
-                        }
-                    }
-                }
-                break;
-            case 2:
-                if (fragments != null) {
-                    for (Fragment fragment : fragments) {
-                        if (fragment instanceof StockAct) {
-                            ((StockAct) fragment).loadFragment();
-                            break;
-                        }
-                    }
-                }
-                break;
-            case 3:
-                if (fragments != null) {
-                    for (Fragment fragment : fragments) {
-                        if (fragment instanceof InventoryAct) {
-                            ((InventoryAct) fragment).loadFragment();
-                            break;
-                        }
-                    }
-                }
-                break;
+            }
         }
     }
-
-    @Override
-    public void onPageScrollStateChanged(int state) {
-
-    }
-
 }

@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.List;
@@ -12,8 +13,8 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.fireant.pplus.R;
-import io.fireant.pplus.database.tables.Category;
-import io.fireant.pplus.database.tables.Product;
+import io.fireant.pplus.common.Constants;
+import io.fireant.pplus.database.tables.entities.Product;
 
 /**
  * Created by engsokan on 8/10/18.
@@ -35,8 +36,17 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
         @BindView(R.id.tv_code)
         TextView mTvCode;
 
+        @BindView(R.id.tv_currency_type)
+        TextView mTvCurrencyType;
+
+        @BindView(R.id.tv_price)
+        TextView mTvPrice;
+
         @BindView(R.id.img_delete)
         ImageView mImgDelete;
+
+        @BindView(R.id.ln_item)
+        LinearLayout mLnItem;
 
         public MyViewHolder(View view) {
             super(view);
@@ -52,6 +62,12 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
                 }
             });
 
+            mLnItem.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.onItemClick(product.id);
+                }
+            });
         }
 
     }
@@ -77,7 +93,8 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
         holder.mTvNo.setText(String.valueOf(no));
         holder.mTvName.setText(product.productName);
         holder.mTvCode.setText(product.code);
-
+        holder.mTvCurrencyType.setText(product.currencyCode);
+        holder.mTvPrice.setText(String.valueOf(product.pricePerUnit));
     }
 
 
@@ -87,6 +104,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
     }
 
     public interface OnItemClickListener {
+        void onItemClick(String productId);
         void onDeleteItemClick(Product product, int position);
     }
 }

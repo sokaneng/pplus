@@ -13,25 +13,28 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.jaredrummler.materialspinner.MaterialSpinner;
+
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 import io.fireant.pplus.R;
+import io.fireant.pplus.common.Constants;
 import io.fireant.pplus.common.PPlusDialog;
 import io.fireant.pplus.database.AppDatabase;
-import io.fireant.pplus.database.tables.Category;
-import io.fireant.pplus.database.tables.Product;
+import io.fireant.pplus.database.tables.entities.Category;
+import io.fireant.pplus.database.tables.entities.Currency;
+import io.fireant.pplus.database.tables.entities.Product;
+import io.fireant.pplus.database.tables.entities.Stock;
 import io.fireant.pplus.views.inventory.category.adapter.SelectMainCategoryAdapter;
 
 /**
@@ -46,11 +49,18 @@ public class ProductAddAct extends AppCompatActivity {
     @BindView(R.id.ed_product_code)
     EditText mEdProductCode;
 
+    @BindView(R.id.ed_product_price)
+    EditText mEdProductPrice;
+
     @BindView(R.id.tv_category_selected_text)
     TextView mTvCategorySelectedText;
 
+    @BindView(R.id.spinner_currency)
+    MaterialSpinner mSpCurrency;
+
     private AppDatabase mDb;
     private String catId;
+    List<Currency> currencyList = new ArrayList<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -58,6 +68,8 @@ public class ProductAddAct extends AppCompatActivity {
         setContentView(R.layout.layout_product_add);
         ButterKnife.bind(this);
         mDb = AppDatabase.getDatabase(getApplicationContext());
+
+        loadCurrencyCode();
     }
 
     @Override
@@ -77,40 +89,61 @@ public class ProductAddAct extends AppCompatActivity {
         if (productName != null && !productName.isEmpty()) {
             String productCode = mEdProductCode.getText().toString().trim();
             if (productCode != null && !productCode.isEmpty()) {
-                if (catId != null && !catId.isEmpty()) {
-                    Product product = new Product();
-                    UUID uuid = UUID.randomUUID();
-                    String id = uuid.toString();
-                    product.id = id;
-                    product.productName = productName;
-                    product.catId = catId;
-                    product.code = productCode;
-                    product.createDate = new Date();
-                    product.status = 1;
+                String productPrice = mEdProductPrice.getText().toString().trim();
+                if(productPrice != null && !productPrice.isEmpty()){
+                    if (catId != null && !catId.isEmpty()) {
+                        Product product = new Product();
+                        UUID uuid = UUID.randomUUID();
+                        String id = uuid.toString();
+                        product.id = id;
+                        product.productName = productName;
+                        product.catId = catId;
+                        product.code = productCode;
+                        product.pricePerUnit = Double.parseDouble(productPrice);
+                        product.currencyCode = currencyList.get(mSpCurrency.getSelectedIndex()).currencyCode;
+                        product.createDate = new Date();
+                        product.status = 1;
+                        mDb.productDao().insertProduct(product);
 
-                    mDb.productDao().insertProduct(product);
-                    new PPlusDialog(ProductAddAct.this, new PPlusDialog.PPlusDialogListener() {
-                        @Override
-                        public void onPositiveClicked() {
-                            mEdProductName.setText("");
-                            mEdProductCode.setText("");
-                            mTvCategorySelectedText.setText(R.string.select_category);
-                            mTvCategorySelectedText.setTextColor(getResources().getColor(R.color.colorGrayDark));
-                            catId = null;
-                        }
+                        Stock stock = new Stock();
+                        uuid = UUID.randomUUID();
+                        String stockId = uuid.toString();
+                        stock.id = stockId;
+                        stock.proId = product.id;
+                        stock.status = 1;
+                        stock.totalQuantity = 0;
+                        stock.createDate = new Date();
+                        mDb.stockDao().insertStock(stock);
 
-                        @Override
-                        public void onNegativeClicked() {
-                            onBackPressed();
-                        }
-                    }).confirmSuccessDialog(
-                            getString(R.string.product_has_been_created),
-                            getString(R.string.add_more),
-                            getString(R.string.back)
-                    );
-                } else {
-                    Toast.makeText(getApplicationContext(), R.string.please_select_category, Toast.LENGTH_SHORT).show();
+                        new PPlusDialog(ProductAddAct.this, new PPlusDialog.PPlusDialogListener() {
+                            @Override
+                            public void onPositiveClicked() {
+                                mEdProductName.setText("");
+                                mEdProductCode.setText("");
+                                mEdProductPrice.setText("");
+                                mTvCategorySelectedText.setText(R.string.select_category);
+                                mTvCategorySelectedText.setTextColor(getResources().getColor(R.color.colorGrayDark));
+                                catId = null;
+                                mEdProductName.requestFocus();
+                            }
+
+                            @Override
+                            public void onNegativeClicked() {
+                                onBackPressed();
+                            }
+                        }).confirmSuccessDialog(
+                                getString(R.string.product_has_been_created),
+                                getString(R.string.add_more),
+                                getString(R.string.back)
+                        );
+                    } else {
+                        Toast.makeText(getApplicationContext(), R.string.please_select_category, Toast.LENGTH_SHORT).show();
+                    }
+                }else {
+                    Toast.makeText(getApplicationContext(), R.string.please_set_the_price, Toast.LENGTH_SHORT).show();
+                    mEdProductPrice.requestFocus();
                 }
+
             } else {
                 Toast.makeText(getApplicationContext(), R.string.please_input_product_code, Toast.LENGTH_SHORT).show();
                 mEdProductCode.requestFocus();
@@ -123,7 +156,7 @@ public class ProductAddAct extends AppCompatActivity {
 
     private void dialogSelectCategory() {
 
-        List<Category> mainCategoryList = mDb.categoryDao().loadAllSubCategory();
+        List<Category> mainCategoryList = mDb.categoryDao().loadAllCategoryByIsMainCategoryStatus(Constants.HAS_NO_CHILD);
 
         final Dialog dialog = new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -164,4 +197,12 @@ public class ProductAddAct extends AppCompatActivity {
         dialog.show();
     }
 
+    private void loadCurrencyCode() {
+        currencyList = mDb.currencyDao().loadAllCurrency();
+        List<String> codes = new ArrayList<>();
+        for (Currency currency : currencyList) {
+            codes.add(currency.currencyCode);
+        }
+        mSpCurrency.setItems(codes);
+    }
 }

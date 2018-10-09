@@ -27,7 +27,7 @@ import butterknife.OnClick;
 import io.fireant.pplus.R;
 import io.fireant.pplus.common.PPlusDialog;
 import io.fireant.pplus.database.AppDatabase;
-import io.fireant.pplus.database.tables.Category;
+import io.fireant.pplus.database.tables.entities.Category;
 import io.fireant.pplus.views.inventory.category.adapter.SelectMainCategoryAdapter;
 
 /**
@@ -45,7 +45,7 @@ public class CategoryAddAct extends AppCompatActivity {
     @BindView(R.id.ed_category_name)
     EditText mEdCategoryName;
 
-    private String mainCatId;
+    private Category mainCat;
     private AppDatabase mDb;
 
     @Override
@@ -68,7 +68,7 @@ public class CategoryAddAct extends AppCompatActivity {
             dialogSelectCategory();
         } else {
             mTvCategory.setText(R.string.none);
-            mainCatId = null;
+            mainCat = null;
         }
 
     }
@@ -82,9 +82,13 @@ public class CategoryAddAct extends AppCompatActivity {
             String id = uuid.toString();
             category.id = id;
             category.categoryName = categoryName;
+            category.hasChild = 0;
 
-            if (mainCatId != null) {
-                category.mainCatId = mainCatId;
+            if (mainCat != null) {
+                category.mainCatId = mainCat.id;
+                //Update selected mainCatId to isMainCategory
+                mainCat.hasChild = 1;
+                mDb.categoryDao().updateCategory(mainCat);
             }
             category.createDate = new Date();
             category.status = 1;
@@ -93,7 +97,7 @@ public class CategoryAddAct extends AppCompatActivity {
             new PPlusDialog(CategoryAddAct.this, new PPlusDialog.PPlusDialogListener() {
                 @Override
                 public void onPositiveClicked() {
-                    mainCatId = null;
+                    mainCat = null;
                     mEdCategoryName.setText("");
                     mCbIsSubCat.setChecked(false);
                 }
@@ -140,7 +144,7 @@ public class CategoryAddAct extends AppCompatActivity {
         SelectMainCategoryAdapter mAdapter = new SelectMainCategoryAdapter(mainCategoryList, new SelectMainCategoryAdapter.OnItemClickListener() {
             @Override
             public void onAddItemClick(Category category, int position) {
-                mainCatId = category.id;
+                mainCat = category;
                 mTvCategory.setText(category.categoryName);
                 dialog.dismiss();
             }

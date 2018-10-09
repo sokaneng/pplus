@@ -65,7 +65,4 @@ public class SaleAct extends Fragment {
 
         return rootView;
     }
-
-    public void loadFragment() {
-    }
 }

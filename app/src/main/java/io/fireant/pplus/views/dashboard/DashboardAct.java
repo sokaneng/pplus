@@ -15,7 +15,5 @@ public class DashboardAct extends Fragment {
         return rootView;
     }
 
-    public void loadFragment(){
-    }
 
 }

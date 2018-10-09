@@ -1,11 +1,9 @@
 package io.fireant.pplus.views.sale.adapter;
 
-import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -15,7 +13,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.fireant.pplus.R;
 import io.fireant.pplus.dto.ProductSaleDTO;
-import io.fireant.pplus.dto.StockDTO;
 
 /**
  * Created by engsokan on 11/29/17.
