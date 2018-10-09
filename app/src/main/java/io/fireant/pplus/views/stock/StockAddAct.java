@@ -51,6 +51,15 @@ public class StockAddAct extends AppCompatActivity {
         ButterKnife.bind(this);
         mDb = AppDatabase.getDatabase(getApplicationContext());
         mEdQuantity.setSelection(mEdQuantity.getText().toString().trim().length());
+
+        //Get intent from product detail act
+        Intent intent = getIntent();
+        if(intent.hasExtra("PRODUCT_NAME")){
+            String productName = intent.getStringExtra("PRODUCT_NAME");
+            productSelectedId = intent.getStringExtra("PRODUCT_ID");
+            mTvProductSelected.setText(productName);
+            mTvProductSelected.setTextColor(getResources().getColor(R.color.colorBlack));
+        }
     }
 
     @Override

@@ -14,9 +14,12 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.inputmethod.InputMethodManager;
+
 import com.mancj.materialsearchbar.MaterialSearchBar;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import io.fireant.pplus.R;
@@ -67,27 +70,43 @@ public class CategoryAct extends AppCompatActivity implements MaterialSearchBar.
         mAdapter = new CategoryAdapter(CategoryAct.this, categoryList, new CategoryAdapter.OnItemClickListener() {
             @Override
             public void onDeleteItemClick(final Category category, final int position) {
-                Product product = mDb.productDao().findProductByCategoryId(category.id);
-                if(product == null){
-                    new PPlusDialog(CategoryAct.this, new PPlusDialog.PPlusDialogListener() {
-                        @Override
-                        public void onPositiveClicked() {
-                            category.status = 0;
-                            mDb.categoryDao().updateCategory(category);
-                            categoryList.remove(position);
-                            mAdapter.notifyDataSetChanged();
-                        }
+                List<Category> categories = mDb.categoryDao().findByCategoryIdHasChild(category.id);
+                if (categories == null || categories.isEmpty()) {
+                    Product product = mDb.productDao().findProductByCategoryId(category.id);
+                    if (product == null) {
+                        new PPlusDialog(CategoryAct.this, new PPlusDialog.PPlusDialogListener() {
+                            @Override
+                            public void onPositiveClicked() {
+                                category.status = 0;
+                                mDb.categoryDao().updateCategory(category);
+                                categoryList.remove(position);
+                                mAdapter.notifyDataSetChanged();
+                            }
 
-                        @Override
-                        public void onNegativeClicked() {
+                            @Override
+                            public void onNegativeClicked() {
 
-                        }
-                    }).confirmDeleteDialog(
-                            getString(R.string.do_you_want_to_delete),
-                            getString(R.string.yes),
-                            getString(R.string.cancel));
+                            }
+                        }).confirmDeleteDialog(
+                                getString(R.string.do_you_want_to_delete),
+                                getString(R.string.yes),
+                                getString(R.string.cancel));
+                    } else {
+                        String msg = getString(R.string.sorry_you_cannot_delete_cat) + "\n" + getString(R.string.there_is_some_product_belong);
+                        new PPlusDialog(CategoryAct.this, new PPlusDialog.PPlusDialogListener() {
+                            @Override
+                            public void onPositiveClicked() {
+
+                            }
+
+                            @Override
+                            public void onNegativeClicked() {
+
+                            }
+                        }).warningDialog(msg);
+                    }
                 }else {
-                    String msg = getString(R.string.sorry_you_cannot_delete_cat) + "\n" + getString(R.string.there_is_some_product_belong);
+                    String msg = getString(R.string.sorry_you_cannot_delete_cat) + "\n" + getString(R.string.there_is_some_category_belong);
                     new PPlusDialog(CategoryAct.this, new PPlusDialog.PPlusDialogListener() {
                         @Override
                         public void onPositiveClicked() {
@@ -100,6 +119,7 @@ public class CategoryAct extends AppCompatActivity implements MaterialSearchBar.
                         }
                     }).warningDialog(msg);
                 }
+
             }
         });
         RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getApplicationContext(), 1);
